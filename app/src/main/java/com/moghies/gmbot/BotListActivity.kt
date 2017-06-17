@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import com.moghies.gmbot.dialog.ManualAddBotDialogWrapper
 
@@ -24,7 +23,7 @@ class BotListActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         setSupportActionBar(toolbar)
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { _ -> showAddBotDialog()}
+        fab.setOnClickListener {showAddBotDialog()}
     }
 
     /**

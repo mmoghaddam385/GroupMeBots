@@ -1,12 +1,11 @@
 package com.moghies.gmbot.dialog
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
-import android.support.annotation.LayoutRes
 import android.util.Log
 import android.view.View
+import com.moghies.gmbot.dialog.validator.Validator
+import java.util.*
 
 /**
  * Created by mmogh on 6/15/2017.
@@ -14,6 +13,8 @@ import android.view.View
 abstract class DialogWrapper : DialogInterface.OnClickListener, View.OnClickListener {
 
     protected var dialog: AlertDialog? = null
+
+    protected val validatorList: MutableList<Validator> = LinkedList<Validator>()
 
     fun show() {
         dialog!!.show()
@@ -30,10 +31,22 @@ abstract class DialogWrapper : DialogInterface.OnClickListener, View.OnClickList
 
     /**
      * Called when the positive button is clicked, after onPositiveButtonClicked(dialog)
-     * This function will call onValidateSuccess if it returns true
-     * and onValidateFail if it returns false
+     * If it returns true, then [onValidateSuccess] is called
+     * otherwise [onValidateFail] is called
+     *
+     * @return Default implementation loops over validators and will return
+     *         false if any validators fail, but runs them all
      */
-    protected open fun onDialogValidate(dialog: AlertDialog) : Boolean = true
+    protected open fun onDialogValidate(dialog: AlertDialog) : Boolean {
+        var isValid = true
+
+        for (validator in validatorList) {
+            isValid = isValid && validator.doValidation()
+        }
+
+        return isValid
+    }
+
     protected open fun onValidateSuccess(dialog: AlertDialog) {}
     protected open fun onValidateFail(dialog: AlertDialog) {}
 
@@ -61,15 +74,14 @@ abstract class DialogWrapper : DialogInterface.OnClickListener, View.OnClickList
      * redirects raw click events from buttons
      */
     override fun onClick(view: View?) {
-        val which = when (view!!.id) {
+        val id = view!!.id
+
+        val which = when (id) {
             android.R.id.button1 -> DialogInterface.BUTTON_POSITIVE
             android.R.id.button2 -> DialogInterface.BUTTON_NEGATIVE
             android.R.id.button3 -> DialogInterface.BUTTON_NEUTRAL
             else -> -1
         }
-
-        Log.i("tag", "This is the id: ${view!!.id}")
-        Log.i("tag", "This is which: $which")
 
         onClick(dialog, which)
     }

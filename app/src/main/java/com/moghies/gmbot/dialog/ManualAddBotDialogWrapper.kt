@@ -3,12 +3,15 @@ package com.moghies.gmbot.dialog
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.EditText
 import com.moghies.gmbot.R
+import com.moghies.gmbot.dialog.validator.TextInputRequiredValidator
 import java.util.logging.Logger
 
 /**
@@ -16,9 +19,9 @@ import java.util.logging.Logger
  */
 class ManualAddBotDialogWrapper(context: Context) : DialogWrapper() {
 
-    private var botId: String = ""
-    private var botName: String = ""
-    private var botGroup: String = ""
+    private val txtBotId : TextInputEditText
+    private val txtBotName : TextInputEditText
+    private val txtBotGroup : TextInputEditText
 
     init {
         val builder = AlertDialog.Builder(context)
@@ -26,10 +29,15 @@ class ManualAddBotDialogWrapper(context: Context) : DialogWrapper() {
         builder.setPositiveButton("Add", null)
         builder.setNegativeButton("Cancel", null)
 
+        val view = LayoutInflater.from(context).inflate(R.layout.layout_add_bot, null)
+        txtBotId = view.findViewById(R.id.txtBotId) as TextInputEditText
+        txtBotName = view.findViewById(R.id.txtBotName) as TextInputEditText
+        txtBotGroup = view.findViewById(R.id.txtBotGroup) as TextInputEditText
 
+        validatorList.add(TextInputRequiredValidator(txtBotId))
 
         dialog = builder.create()
-        dialog!!.setView(LayoutInflater.from(context).inflate(R.layout.layout_add_bot, null))
+        dialog!!.setView(view)
 
         dialog!!.setOnShowListener({dialogInterface ->
             val alertDialog = dialogInterface as AlertDialog
@@ -40,26 +48,9 @@ class ManualAddBotDialogWrapper(context: Context) : DialogWrapper() {
 
     }
 
-    override fun onDialogValidate(dialog: AlertDialog): Boolean {
-        extractInputs(dialog)
-
-        // only required field is botId
-        return !TextUtils.isEmpty(botId)
-    }
-
     override fun onValidateSuccess(dialog: AlertDialog) {
-        Log.i("Manual add bot dialog", "Adding bot!!")
+        Log.d("onValidateSuccess", "added bot!")
         dialog.dismiss()
-    }
-
-    override fun onValidateFail(dialog: AlertDialog) {
-        (dialog.findViewById(R.id.txtBotIdWrapper) as TextInputLayout).error = "Bot id is required"
-    }
-
-    private fun extractInputs(dialog: AlertDialog) {
-        botId = (dialog.findViewById(R.id.txtBotId) as EditText).text.toString()
-        botName = (dialog.findViewById(R.id.txtBotName) as EditText).text.toString()
-        botGroup = (dialog.findViewById(R.id.txtBotGroup) as EditText).text.toString()
     }
 
 }
