@@ -6,9 +6,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ListView
 import com.moghies.gmbot.dialog.ManualAddBotDialogWrapper
 
 class BotListActivity : AppCompatActivity() {
+
+    var lvBotList: ListView? = null
+    var lvBotListAdapter = BotListAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bot_list)
@@ -19,6 +24,11 @@ class BotListActivity : AppCompatActivity() {
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener {showAddBotDialog()}
+
+        lvBotList = findViewById(R.id.lvBotList) as ListView
+
+        lvBotList!!.adapter = lvBotListAdapter
+        lvBotListAdapter.loadFromStorage(this)
     }
 
     /**

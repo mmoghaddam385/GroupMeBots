@@ -12,7 +12,9 @@ import com.moghies.gmbot.db.BotDbHelper
  *
  * Created by mmogh on 6/18/2017.
  */
-class SelectBotsTask(val context: Context, val whereClause: String? = null, val whereArgs: Array<String>? = null) : AsyncTask<Unit, Unit, List<BotDbContract.BotsTable.BotEntry>>() {
+class SelectBotsTask(val context: Context, val whereClause: String? = null,
+                     val whereArgs: Array<String>? = null,
+                     val onComplete: ((List<BotDbContract.BotsTable.BotEntry>) -> Unit)? = null) : AsyncTask<Unit, Unit, List<BotDbContract.BotsTable.BotEntry>>() {
 
     override fun doInBackground(vararg args: Unit?): List<BotDbContract.BotsTable.BotEntry> {
         val bots = arrayListOf<BotDbContract.BotsTable.BotEntry>()
@@ -33,13 +35,7 @@ class SelectBotsTask(val context: Context, val whereClause: String? = null, val 
 
     override fun onPostExecute(result: List<BotDbContract.BotsTable.BotEntry>?) {
         super.onPostExecute(result)
-
-        Log.i("select post execute: ", " is succuessss? ${result != null}")
-        Log.i("select post execute: ", " found ${result?.size} rows")
-
-        for (bot in result!!) {
-            Log.i("select pos execute: ", "\t${bot.toString()}")
-        }
+        onComplete?.invoke(result!!)
     }
 
     private fun extractBotFromCursor(cursor: Cursor) : BotDbContract.BotsTable.BotEntry {

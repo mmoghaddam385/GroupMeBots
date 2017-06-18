@@ -32,10 +32,10 @@ class DeleteBotsTask(val context: Context, var whereClause: String? = null, var 
         return success
     }
 
-    override fun onPostExecute(result: Boolean?) {
-        super.onPostExecute(result)
+    override fun onPostExecute(exception: Boolean?) {
+        super.onPostExecute(exception)
 
-        Log.i("on post exexute", "was success!?!?! ${result}")
+        Log.i("on post exexute", "was success!?!?! ${exception}")
     }
 
     private fun constructWhereClause(bots : List<BotDbContract.BotsTable.BotEntry?>) {

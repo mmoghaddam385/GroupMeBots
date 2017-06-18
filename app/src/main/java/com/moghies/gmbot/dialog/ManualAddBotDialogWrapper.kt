@@ -4,20 +4,17 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.support.design.widget.TextInputEditText
-import android.support.design.widget.TextInputLayout
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import com.moghies.gmbot.R
+import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.dialog.validator.TextInputRequiredValidator
-import java.util.logging.Logger
+import com.moghies.gmbot.task.db.InsertBotsTask
 
 /**
  * Created by mmogh on 6/15/2017.
  */
-class ManualAddBotDialogWrapper(context: Context) : DialogWrapper() {
+class ManualAddBotDialogWrapper(val context: Context) : DialogWrapper() {
 
     private val txtBotId : TextInputEditText
     private val txtBotName : TextInputEditText
@@ -49,7 +46,17 @@ class ManualAddBotDialogWrapper(context: Context) : DialogWrapper() {
     }
 
     override fun onValidateSuccess(dialog: AlertDialog) {
-        Log.d("onValidateSuccess", "added bot!")
+        val bot = BotDbContract.BotsTable.BotEntry(
+                id = txtBotId.text.toString(),
+                name = txtBotName.text.toString(),
+                groupName = txtBotGroup.text.toString(),
+                source = BotDbContract.BotsTable.MANUAL_BOT_SOURCE
+        )
+
+        Log.i(this.javaClass.name, "Adding new bot: $bot")
+
+        InsertBotsTask(context).execute(bot)
+
         dialog.dismiss()
     }
 

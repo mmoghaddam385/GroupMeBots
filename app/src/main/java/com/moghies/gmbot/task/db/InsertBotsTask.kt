@@ -1,44 +1,68 @@
 package com.moghies.gmbot.task.db
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteConstraintException
+import android.database.sqlite.SQLiteException
 import android.os.AsyncTask
+import android.support.design.widget.Snackbar
 import android.util.Log
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.db.BotDbHelper
+import java.sql.SQLException
 
 /**
  * This task asynchronously adds bot entries to the SQLite database
  *
  * Created by mmogh on 6/17/2017.
  */
-class InsertBotsTask(val context: Context) : AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, Boolean>() {
+class InsertBotsTask(val context: Context) : AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, SQLiteException?>() {
 
-    override fun doInBackground(vararg bots : BotDbContract.BotsTable.BotEntry?):  Boolean {
-        var success = true
+    var numBotsToAdd: Int = 0
+
+    override fun doInBackground(vararg bots : BotDbContract.BotsTable.BotEntry?):  SQLiteException? {
+        var exception: SQLiteException? = null
+        numBotsToAdd = bots.size
 
         BotDbHelper(context).writableDatabase.use { db ->
 
-            // attempt to insert each bot
-            for (bot in bots) {
-                if (bot != null) {
-                    val result = db.insert(BotDbContract.BotsTable.TABLE_NAME, null, getContentValues(bot))
-
-                    // if result is -1, there was a problem :(
-                    if (result == -1L) {
-                        success = false
+            try {
+                // attempt to insert each bot
+                for (bot in bots) {
+                    if (bot != null) {
+                        db.insertOrThrow(BotDbContract.BotsTable.TABLE_NAME, null, getContentValues(bot))
                     }
                 }
+            } catch (ex: SQLiteException) {
+                Log.e(this.javaClass.name, "Error inserting bot: ", ex)
+                exception = ex
             }
         }
 
-        return success
+        return exception
     }
 
-    override fun onPostExecute(result: Boolean?) {
-        super.onPostExecute(result)
+    override fun onPostExecute(exception: SQLiteException?) {
+        super.onPostExecute(exception)
+        Log.i(this.javaClass.name, "Post Insert; succes? ${exception == null}")
 
-        Log.i("onpost exexte", "succes? ${result}")
+        // something went wrong...snackbar
+        val msg = if (exception != null) {
+            if (numBotsToAdd > 1) {
+                "One or more bots could not be added"
+            } else {
+                when (exception) {
+                    is SQLiteConstraintException -> "A bot with that ID is already here"
+                    else -> "Bot could not be added"
+                }
+            }
+        } else {
+            "Bot Added!"
+        }
+
+        val view = (context as Activity).window.decorView.findViewById(android.R.id.content)
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
     }
 
     private fun getContentValues(bot: BotDbContract.BotsTable.BotEntry) : ContentValues {
