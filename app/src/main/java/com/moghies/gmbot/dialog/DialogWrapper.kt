@@ -2,12 +2,14 @@ package com.moghies.gmbot.dialog
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.util.Log
 import android.view.View
 import com.moghies.gmbot.dialog.validator.Validator
 import java.util.*
 
 /**
+ * This class describes a wrapper framework for modal dialogs
+ * see implementations for details
+ *
  * Created by mmogh on 6/15/2017.
  */
 abstract class DialogWrapper : DialogInterface.OnClickListener, View.OnClickListener {
@@ -74,9 +76,7 @@ abstract class DialogWrapper : DialogInterface.OnClickListener, View.OnClickList
      * redirects raw click events from buttons
      */
     override fun onClick(view: View?) {
-        val id = view!!.id
-
-        val which = when (id) {
+        val which = when (view!!.id) {
             android.R.id.button1 -> DialogInterface.BUTTON_POSITIVE
             android.R.id.button2 -> DialogInterface.BUTTON_NEGATIVE
             android.R.id.button3 -> DialogInterface.BUTTON_NEUTRAL

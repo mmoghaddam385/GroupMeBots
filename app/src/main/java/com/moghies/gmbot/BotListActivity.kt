@@ -1,19 +1,14 @@
 package com.moghies.gmbot
 
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
 import com.moghies.gmbot.dialog.ManualAddBotDialogWrapper
 
-class BotListActivity : AppCompatActivity(), DialogInterface.OnClickListener {
+class BotListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bot_list)
@@ -31,27 +26,6 @@ class BotListActivity : AppCompatActivity(), DialogInterface.OnClickListener {
      */
     private fun showAddBotDialog() {
         ManualAddBotDialogWrapper(this).show()
-    }
-
-    private fun validateAddBotDialog(dialog: Dialog) {
-        val botId = (dialog.findViewById(R.id.txtBotId) as EditText).text
-        val botName = (dialog.findViewById(R.id.txtBotName) as EditText).text
-        val botGroup = (dialog.findViewById(R.id.txtBotGroup) as EditText).text
-
-        // only botId is required
-        if (TextUtils.isEmpty(botId)) {
-
-        }
-    }
-
-
-    /**
-     * on dialog click
-     */
-    override fun onClick(dialog: DialogInterface?, btn: Int) {
-        if (btn == DialogInterface.BUTTON_POSITIVE) {
-            validateAddBotDialog(dialog as AlertDialog)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
