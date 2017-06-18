@@ -15,17 +15,19 @@ import com.moghies.gmbot.db.BotDbHelper
 class InsertBotsTask(val context: Context) : AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, Boolean>() {
 
     override fun doInBackground(vararg bots : BotDbContract.BotsTable.BotEntry?):  Boolean {
-        val db = BotDbHelper(context).writableDatabase
         var success = true
 
-        // attempt to insert each bot
-        for (bot in bots) {
-            if (bot != null) {
-                val result = db.insert(BotDbContract.BotsTable.TABLE_NAME, null, getContentValues(bot))
+        BotDbHelper(context).writableDatabase.use { db ->
 
-                // if result is -1, there was a problem :(
-                if (result == -1L) {
-                    success = false
+            // attempt to insert each bot
+            for (bot in bots) {
+                if (bot != null) {
+                    val result = db.insert(BotDbContract.BotsTable.TABLE_NAME, null, getContentValues(bot))
+
+                    // if result is -1, there was a problem :(
+                    if (result == -1L) {
+                        success = false
+                    }
                 }
             }
         }

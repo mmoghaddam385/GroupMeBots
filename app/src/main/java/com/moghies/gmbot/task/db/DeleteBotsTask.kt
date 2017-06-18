@@ -16,15 +16,17 @@ import com.moghies.gmbot.db.BotDbHelper
 class DeleteBotsTask(val context: Context, var whereClause: String? = null, var whereArgs: Array<String>? = null): AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, Boolean>() {
 
     override fun doInBackground(vararg bots: BotDbContract.BotsTable.BotEntry?): Boolean {
-        val db = BotDbHelper(context).writableDatabase
         var success = true
 
-        // delete based on where clause
-        if (whereClause != null) {
-            success = doDelete(db)
-        } else {
-            constructWhereClause(bots.asList())
-            success = doDelete(db)
+        BotDbHelper(context).writableDatabase.use { db ->
+
+            // delete based on where clause
+            if (whereClause != null) {
+                success = doDelete(db)
+            } else {
+                constructWhereClause(bots.asList())
+                success = doDelete(db)
+            }
         }
 
         return success

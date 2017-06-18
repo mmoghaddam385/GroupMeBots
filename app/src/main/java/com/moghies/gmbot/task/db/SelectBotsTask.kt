@@ -15,13 +15,17 @@ import com.moghies.gmbot.db.BotDbHelper
 class SelectBotsTask(val context: Context, val whereClause: String? = null, val whereArgs: Array<String>? = null) : AsyncTask<Unit, Unit, List<BotDbContract.BotsTable.BotEntry>>() {
 
     override fun doInBackground(vararg args: Unit?): List<BotDbContract.BotsTable.BotEntry> {
-        val db = BotDbHelper(context).readableDatabase
         val bots = arrayListOf<BotDbContract.BotsTable.BotEntry>()
 
-        val cursor = db.query(BotDbContract.BotsTable.TABLE_NAME, null, whereClause, whereArgs, null, null, null)
+        BotDbHelper(context).readableDatabase.use { db ->
 
-        while (cursor.moveToNext()) {
-            bots += extractBotFromCursor(cursor)
+            db.query(BotDbContract.BotsTable.TABLE_NAME, null, whereClause, whereArgs,
+                     null, null, null).use { cursor ->
+
+                while (cursor.moveToNext()) {
+                    bots += extractBotFromCursor(cursor)
+                }
+            }
         }
 
         return bots
