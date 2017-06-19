@@ -14,9 +14,9 @@ import com.moghies.gmbot.db.BotDbHelper
  */
 class SelectBotsTask(val context: Context, val whereClause: String? = null,
                      val whereArgs: Array<String>? = null,
-                     val onComplete: ((List<BotDbContract.BotsTable.BotEntry>) -> Unit)? = null) : AsyncTask<Unit, Unit, List<BotDbContract.BotsTable.BotEntry>>() {
+                     val onComplete: ((MutableList<BotDbContract.BotsTable.BotEntry>) -> Unit)? = null) : AsyncTask<Unit, Unit, MutableList<BotDbContract.BotsTable.BotEntry>>() {
 
-    override fun doInBackground(vararg args: Unit?): List<BotDbContract.BotsTable.BotEntry> {
+    override fun doInBackground(vararg args: Unit?): MutableList<BotDbContract.BotsTable.BotEntry> {
         val bots = arrayListOf<BotDbContract.BotsTable.BotEntry>()
 
         BotDbHelper(context).readableDatabase.use { db ->
@@ -33,8 +33,10 @@ class SelectBotsTask(val context: Context, val whereClause: String? = null,
         return bots
     }
 
-    override fun onPostExecute(result: List<BotDbContract.BotsTable.BotEntry>?) {
+    override fun onPostExecute(result: MutableList<BotDbContract.BotsTable.BotEntry>?) {
         super.onPostExecute(result)
+        Log.i(this.javaClass.name, "Found ${result?.size} bots in storage")
+
         onComplete?.invoke(result!!)
     }
 

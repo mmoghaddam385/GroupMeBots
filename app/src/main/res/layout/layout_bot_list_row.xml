@@ -64,8 +64,8 @@
         android:contentDescription="@string/remove_bot_desc"
         android:background="?selectableItemBackgroundBorderless"
 
-        android:layout_width="@dimen/bot_avatar_size"
-        android:layout_height="@dimen/bot_avatar_size"
+        android:layout_width="@dimen/remove_button_size"
+        android:layout_height="@dimen/remove_button_size"
 
         android:layout_marginRight="15dp"
         android:layout_marginEnd="15dp"

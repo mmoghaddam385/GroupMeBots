@@ -1,23 +1,22 @@
 package com.moghies.gmbot.task.db
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
 import android.os.AsyncTask
-import android.support.design.widget.Snackbar
 import android.util.Log
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.db.BotDbHelper
-import java.sql.SQLException
 
 /**
  * This task asynchronously adds bot entries to the SQLite database
  *
+ * @constructor
+ * @param[onComplete] lambda to be executed upon task completion with the parameter being whatever exception (if any) was encountered while inserting
+ *
  * Created by mmogh on 6/17/2017.
  */
-class InsertBotsTask(val context: Context) : AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, SQLiteException?>() {
+class InsertBotsTask(val context: Context, val onComplete: ((SQLiteException?) -> Unit)? = null) : AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, SQLiteException?>() {
 
     var numBotsToAdd: Int = 0
 
@@ -47,22 +46,7 @@ class InsertBotsTask(val context: Context) : AsyncTask<BotDbContract.BotsTable.B
         super.onPostExecute(exception)
         Log.i(this.javaClass.name, "Post Insert; succes? ${exception == null}")
 
-        // something went wrong...snackbar
-        val msg = if (exception != null) {
-            if (numBotsToAdd > 1) {
-                "One or more bots could not be added"
-            } else {
-                when (exception) {
-                    is SQLiteConstraintException -> "A bot with that ID is already here"
-                    else -> "Bot could not be added"
-                }
-            }
-        } else {
-            "Bot Added!"
-        }
-
-        val view = (context as Activity).window.decorView.findViewById(android.R.id.content)
-        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
+        onComplete?.invoke(exception)
     }
 
     private fun getContentValues(bot: BotDbContract.BotsTable.BotEntry) : ContentValues {

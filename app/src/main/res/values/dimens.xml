@@ -1,4 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="bot_avatar_size">40dp</dimen>
+    <dimen name="remove_button_size">30dp</dimen>
 </resources>

@@ -12,7 +12,7 @@ import com.moghies.gmbot.dialog.ManualAddBotDialogWrapper
 class BotListActivity : AppCompatActivity() {
 
     var lvBotList: ListView? = null
-    var lvBotListAdapter = BotListAdapter()
+    val lvBotListAdapter = BotListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class BotListActivity : AppCompatActivity() {
      * Creates and shows the add bot dialog modal
      */
     private fun showAddBotDialog() {
-        ManualAddBotDialogWrapper(this).show()
+        ManualAddBotDialogWrapper(this, lvBotListAdapter).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

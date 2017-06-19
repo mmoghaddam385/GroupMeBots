@@ -1,5 +1,7 @@
 package com.moghies.gmbot.db
 
+import android.text.TextUtils
+
 /**
  * Contract containing all info on the Bot database
  *
@@ -26,7 +28,25 @@ object BotDbContract {
 
         data class BotEntry(val id:        String,         val source:    String,
                             val name:      String? = null, val groupId:   String? = null,
-                            val groupName: String? = null, val avatarUrl: String? = null)
+                            val groupName: String? = null, val avatarUrl: String? = null) {
+
+            /**
+             * @return the bots name if it has one, its id otherwise
+             */
+            fun displayName(): String = if (name != null && !TextUtils.isEmpty(name)) name else id
+
+            /**
+             * Override the equals function to only check id for equality
+             */
+            override operator fun equals(other: Any?): Boolean {
+                if (other == null || !(other is BotEntry)) {
+                    return false
+                }
+
+                val otherBot = other as BotEntry
+                return this.id == otherBot.id
+            }
+        }
 
     }
 }

@@ -3,7 +3,6 @@ package com.moghies.gmbot.task.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.os.AsyncTask
-import android.util.Log
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.db.BotDbHelper
 
@@ -11,9 +10,13 @@ import com.moghies.gmbot.db.BotDbHelper
  * This task deletes bots from the SQLite db
  * based on a given where clause if given, otherwise based on bot entries passed into execute
  *
+ * @constructor
+ * @param[onComplete] lambda to be executed on complete; the Boolean param denotes whether or not the delete was successful
+ *
  * Created by mmogh on 6/18/2017.
  */
-class DeleteBotsTask(val context: Context, var whereClause: String? = null, var whereArgs: Array<String>? = null): AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, Boolean>() {
+class DeleteBotsTask(val context: Context, var whereClause: String? = null,
+                     var whereArgs: Array<String>? = null, val onComplete: ((Boolean) -> Unit)? = null): AsyncTask<BotDbContract.BotsTable.BotEntry, Unit, Boolean>() {
 
     override fun doInBackground(vararg bots: BotDbContract.BotsTable.BotEntry?): Boolean {
         var success = true
@@ -34,8 +37,7 @@ class DeleteBotsTask(val context: Context, var whereClause: String? = null, var 
 
     override fun onPostExecute(exception: Boolean?) {
         super.onPostExecute(exception)
-
-        Log.i("on post exexute", "was success!?!?! ${exception}")
+        onComplete?.invoke(exception ?: false)
     }
 
     private fun constructWhereClause(bots : List<BotDbContract.BotsTable.BotEntry?>) {
@@ -50,7 +52,8 @@ class DeleteBotsTask(val context: Context, var whereClause: String? = null, var 
         }
 
         // remove the last OR expr
-        builder.removeSuffix(" OR ")
+        builder.delete(builder.length - 4, builder.length)
+        builder.append(";")
         whereClause = builder.toString()
 
         whereArgs = args.toArray(emptyArray<String>())
