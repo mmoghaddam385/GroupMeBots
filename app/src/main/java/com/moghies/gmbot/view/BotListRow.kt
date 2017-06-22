@@ -1,5 +1,6 @@
 package com.moghies.gmbot.view
 
+import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.moghies.gmbot.BotListAdapter
+import com.moghies.gmbot.BotViewActivity
 import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.dialog.RemoveBotDialogWrapper
@@ -75,7 +77,8 @@ class BotListRow(var bot: BotDbContract.BotsTable.BotEntry, val rootView: View, 
     }
 
     private fun onRootViewClicked() {
-        Log.i("tag", "on root view clicked")
+        val intent = Intent(rootView.context, BotViewActivity::class.java)
+        rootView.context.startActivity(intent)
     }
 
     override fun onClick(view: View?) {

@@ -1,6 +1,7 @@
 package com.moghies.gmbot.db
 
 import android.text.TextUtils
+import java.io.Serializable
 
 /**
  * Contract containing all info on the Bot database
@@ -28,7 +29,15 @@ object BotDbContract {
 
         data class BotEntry(val id:        String,         val source:    String,
                             val name:      String? = null, val groupId:   String? = null,
-                            val groupName: String? = null, val avatarUrl: String? = null) {
+                            val groupName: String? = null, val avatarUrl: String? = null) : Serializable {
+
+            companion object {
+                val GENERIC_BOT = BotEntry(
+                        id = "Generic Bot ID",
+                        name = "Generic Bot Name",
+                        source = MANUAL_BOT_SOURCE
+                )
+            }
 
             /**
              * @return the bots name if it has one, its id otherwise
@@ -38,7 +47,7 @@ object BotDbContract {
             /**
              * Override the equals function to only check id for equality
              */
-            override operator fun equals(other: Any?): Boolean {
+            override fun equals(other: Any?): Boolean {
                 if (other == null || !(other is BotEntry)) {
                     return false
                 }

@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.support.design.widget.Snackbar
 import com.moghies.gmbot.BotListAdapter
-import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.task.db.DeleteBotsTask
 

@@ -7,4 +7,11 @@
     <string name="add_bot">Add Bot</string>
     <string name="avatar_img_desc">Bot Avatar Image</string>
     <string name="remove_bot_desc">Remove bot button</string>
+    <string name="title_activity_bot_view">BotViewActivity</string>
+    <string name="send_message_tab">Message</string>
+    <string name="info_tab">Info</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
