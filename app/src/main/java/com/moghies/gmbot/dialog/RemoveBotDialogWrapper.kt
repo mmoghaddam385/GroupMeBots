@@ -13,7 +13,9 @@ import com.moghies.gmbot.task.db.DeleteBotsTask
  *
  * Created by mmogh on 6/18/2017.
  */
-class RemoveBotDialogWrapper(val bot: BotDbContract.BotsTable.BotEntry, val botListAdapter: BotListAdapter, val context: Context) : DialogWrapper() {
+class RemoveBotDialogWrapper(val bot: BotDbContract.BotsTable.BotEntry, val botListAdapter: BotListAdapter?, val context: Context) : DialogWrapper() {
+
+    var onSuccess: ((BotDbContract.BotsTable.BotEntry) -> Unit)? = null
 
     init {
         val builder = AlertDialog.Builder(context)
@@ -41,9 +43,11 @@ class RemoveBotDialogWrapper(val bot: BotDbContract.BotsTable.BotEntry, val botL
     }
 
     private fun dbDeleteSuccess() {
-        botListAdapter.removeBot(bot)
+        botListAdapter?.removeBot(bot)
         val view = (context as Activity).window.decorView.findViewById(android.R.id.content)
         Snackbar.make(view, "${bot.displayName()} has been removed", Snackbar.LENGTH_SHORT).show()
+
+        onSuccess?.invoke(bot)
     }
 
     private fun dbDeleteFail() {

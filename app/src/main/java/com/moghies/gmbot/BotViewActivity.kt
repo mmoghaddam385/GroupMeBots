@@ -59,7 +59,7 @@ class BotViewActivity : AppCompatActivity() {
         mViewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(mViewPager))
 
-        this.bot = savedInstanceState?.getSerializable(BOT_ENTRY_BUNDLE_ID) as BotDbContract.BotsTable.BotEntry? ?: BotDbContract.BotsTable.BotEntry.GENERIC_BOT
+        this.bot = intent.getSerializableExtra(BOT_ENTRY_BUNDLE_ID) as BotDbContract.BotsTable.BotEntry? ?: BotDbContract.BotsTable.BotEntry.GENERIC_BOT
         supportActionBar!!.title = this.bot.displayName()
     }
 

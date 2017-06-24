@@ -78,6 +78,8 @@ class BotListRow(var bot: BotDbContract.BotsTable.BotEntry, val rootView: View, 
 
     private fun onRootViewClicked() {
         val intent = Intent(rootView.context, BotViewActivity::class.java)
+        intent.putExtra(BotViewActivity.BOT_ENTRY_BUNDLE_ID, bot)
+
         rootView.context.startActivity(intent)
     }
 

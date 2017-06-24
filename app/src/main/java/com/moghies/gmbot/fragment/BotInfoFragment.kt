@@ -13,6 +13,7 @@ import android.widget.TextView
 
 import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
+import com.moghies.gmbot.dialog.RemoveBotDialogWrapper
 
 
 /**
@@ -68,7 +69,12 @@ class BotInfoFragment(val bot: BotDbContract.BotsTable.BotEntry) : Fragment() {
     }
 
     private fun onRemoveClicked() {
+        val dialog = RemoveBotDialogWrapper(bot, null, this.context)
+        dialog.onSuccess = {
+            this.activity.onBackPressed()
+        }
 
+        dialog.show()
     }
 
     private fun saveChanges() {
