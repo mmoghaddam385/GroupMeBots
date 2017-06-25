@@ -21,7 +21,7 @@ class DeleteBotsTask(val context: Context, var whereClause: String? = null,
     override fun doInBackground(vararg bots: BotDbContract.BotsTable.BotEntry?): Boolean {
         var success = true
 
-        BotDbHelper(context).writableDatabase.use { db ->
+        BotDbHelper.Factory.get(context).writableDatabase.use { db ->
 
             // delete based on where clause
             if (whereClause != null) {

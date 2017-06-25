@@ -19,19 +19,22 @@ import com.moghies.gmbot.dialog.RemoveBotDialogWrapper
  *
  * Created by mmogh on 6/18/2017.
  */
-class BotListRow(var bot: BotDbContract.BotsTable.BotEntry, val rootView: View, val botListAdapter: BotListAdapter) : View.OnClickListener {
+class BotListRow(var bot: BotDbContract.BotsTable.BotEntry, val rootView: View,
+                 val botListAdapter: BotListAdapter,
+                 val onRowClicked : ((BotDbContract.BotsTable.BotEntry) -> Unit)) : View.OnClickListener {
 
     companion object {
-
         private const val REMOVE_BUTTON_TAG = "REMOVE_BUTTON_TAG"
 
         /**
          * Initialize a bot list row given a bot
          */
-        fun fromBot(bot: BotDbContract.BotsTable.BotEntry, layoutInflator: LayoutInflater, botListAdapter: BotListAdapter): BotListRow {
+        fun fromBot(bot: BotDbContract.BotsTable.BotEntry, layoutInflator: LayoutInflater,
+                    botListAdapter: BotListAdapter, onRowClicked : ((BotDbContract.BotsTable.BotEntry) -> Unit)) : BotListRow {
+
             val view = layoutInflator.inflate(R.layout.layout_bot_list_row, null)
 
-            val botListRow = BotListRow(bot, view, botListAdapter)
+            val botListRow = BotListRow(bot, view, botListAdapter, onRowClicked)
             botListRow.set(bot)
             return botListRow
         }
@@ -76,16 +79,9 @@ class BotListRow(var bot: BotDbContract.BotsTable.BotEntry, val rootView: View, 
         RemoveBotDialogWrapper(bot, botListAdapter, rootView.context).show()
     }
 
-    private fun onRootViewClicked() {
-        val intent = Intent(rootView.context, BotViewActivity::class.java)
-        intent.putExtra(BotViewActivity.BOT_ENTRY_BUNDLE_ID, bot)
-
-        rootView.context.startActivity(intent)
-    }
-
     override fun onClick(view: View?) {
         when (view?.tag) {
-            this -> onRootViewClicked()
+            this -> onRowClicked(bot)
             REMOVE_BUTTON_TAG -> onRemoveButtonClicked()
         }
     }

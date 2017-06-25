@@ -24,7 +24,7 @@ class InsertBotsTask(val context: Context, val onComplete: ((SQLiteException?) -
         var exception: SQLiteException? = null
         numBotsToAdd = bots.size
 
-        BotDbHelper(context).writableDatabase.use { db ->
+        BotDbHelper.Factory.get(context).writableDatabase.use { db ->
 
             try {
                 // attempt to insert each bot

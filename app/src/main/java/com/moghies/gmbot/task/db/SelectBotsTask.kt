@@ -19,7 +19,7 @@ class SelectBotsTask(val context: Context, val whereClause: String? = null,
     override fun doInBackground(vararg args: Unit?): MutableList<BotDbContract.BotsTable.BotEntry> {
         val bots = arrayListOf<BotDbContract.BotsTable.BotEntry>()
 
-        BotDbHelper(context).readableDatabase.use { db ->
+        BotDbHelper.Factory.get(context).readableDatabase.use { db ->
 
             db.query(BotDbContract.BotsTable.TABLE_NAME, null, whereClause, whereArgs,
                      null, null, null).use { cursor ->

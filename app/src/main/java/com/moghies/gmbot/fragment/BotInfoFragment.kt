@@ -1,25 +1,29 @@
 package com.moghies.gmbot.fragment
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.moghies.gmbot.BotViewActivity
 
 import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.dialog.RemoveBotDialogWrapper
+import com.moghies.gmbot.task.db.UpdateBotTask
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class BotInfoFragment(val bot: BotDbContract.BotsTable.BotEntry) : Fragment() {
+class BotInfoFragment(var bot: BotDbContract.BotsTable.BotEntry) : Fragment() {
 
     lateinit private var txtBotId: EditText
     lateinit private var txtBotIdWrapper: TextInputLayout
@@ -71,7 +75,11 @@ class BotInfoFragment(val bot: BotDbContract.BotsTable.BotEntry) : Fragment() {
     private fun onRemoveClicked() {
         val dialog = RemoveBotDialogWrapper(bot, null, this.context)
         dialog.onSuccess = {
-            this.activity.onBackPressed()
+            val result = Intent()
+            result.putExtra(BotViewActivity.BOT_ENTRY_BUNDLE_ID, bot)
+
+            this.activity.setResult(BotViewActivity.BOT_DELETED_RESULT, result)
+            this.activity.finish()
         }
 
         dialog.show()
@@ -85,7 +93,19 @@ class BotInfoFragment(val bot: BotDbContract.BotsTable.BotEntry) : Fragment() {
         txtBotNameWrapper.clearFocus()
         txtBotGroupWrapper.clearFocus()
 
-        // TODO: actually save it
+        bot = bot.copy(
+                name = txtBotName.text.toString(),
+                groupName = txtBotGroup.text.toString()
+        )
+
+        // update the title bar if it exists
+        (this.activity as? AppCompatActivity)?.supportActionBar?.title = bot.displayName()
+
+        UpdateBotTask(bot, context).execute()
+
+        val intent = Intent()
+        intent.putExtra(BotViewActivity.BOT_ENTRY_BUNDLE_ID, bot)
+        this.activity.setResult(BotViewActivity.BOT_MODIFIED_RESULT, intent)
     }
 
     private fun enterEditMode() {

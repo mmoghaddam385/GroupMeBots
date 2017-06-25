@@ -16,7 +16,7 @@ import com.moghies.gmbot.view.BotListRow
  *
  * Created by mmogh on 6/18/2017.
  */
-class BotListAdapter : BaseAdapter() {
+class BotListAdapter(val onListItemClicked: ((BotDbContract.BotsTable.BotEntry) -> Unit)) : BaseAdapter() {
 
     private var bots: MutableList<BotDbContract.BotsTable.BotEntry> = mutableListOf()
 
@@ -41,6 +41,17 @@ class BotListAdapter : BaseAdapter() {
     }
 
     /**
+     * update a bot attributes
+     */
+    fun updateBot(bot: BotDbContract.BotsTable.BotEntry) {
+        val pos = bots.indexOf(bot)
+        if (pos >= 0) {
+            bots[pos] = bot
+            notifyDataSetChanged()
+        }
+    }
+
+    /**
      * add a bot to the list view
      */
     fun addBot(bot: BotDbContract.BotsTable.BotEntry) {
@@ -60,7 +71,7 @@ class BotListAdapter : BaseAdapter() {
 
             // view does not exist yet, create and return it
             val inflater = LayoutInflater.from(parent!!.context)
-            return BotListRow.fromBot(bot, inflater, this).rootView
+            return BotListRow.fromBot(bot, inflater, this, onListItemClicked).rootView
         }
     }
 

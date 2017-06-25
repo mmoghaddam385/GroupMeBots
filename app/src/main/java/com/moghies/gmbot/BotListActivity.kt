@@ -1,18 +1,21 @@
 package com.moghies.gmbot
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
+import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.dialog.ManualAddBotDialogWrapper
 
 class BotListActivity : AppCompatActivity() {
 
     var lvBotList: ListView? = null
-    val lvBotListAdapter = BotListAdapter()
+    val lvBotListAdapter = BotListAdapter(this::onBotClicked)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +32,18 @@ class BotListActivity : AppCompatActivity() {
 
         lvBotList!!.adapter = lvBotListAdapter
         lvBotListAdapter.loadFromStorage(this)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val bot = data?.getSerializableExtra(BotViewActivity.BOT_ENTRY_BUNDLE_ID) as BotDbContract.BotsTable.BotEntry?
+
+        when (resultCode) {
+            BotViewActivity.BOT_DELETED_RESULT -> bot?.let { lvBotListAdapter.removeBot(it) }
+            BotViewActivity.BOT_MODIFIED_RESULT -> bot?.let { lvBotListAdapter.updateBot(it) }
+        }
     }
 
     /**
@@ -36,6 +51,13 @@ class BotListActivity : AppCompatActivity() {
      */
     private fun showAddBotDialog() {
         ManualAddBotDialogWrapper(this, lvBotListAdapter).show()
+    }
+
+    private fun onBotClicked(bot: BotDbContract.BotsTable.BotEntry) {
+        val intent = Intent(this, BotViewActivity::class.java)
+        intent.putExtra(BotViewActivity.BOT_ENTRY_BUNDLE_ID, bot)
+
+        startActivityForResult(intent, 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -20,6 +20,9 @@ class BotViewActivity : AppCompatActivity() {
 
     companion object {
         const val BOT_ENTRY_BUNDLE_ID = "bot_entry"
+
+        const val BOT_DELETED_RESULT = 100
+        const val BOT_MODIFIED_RESULT = 101
     }
 
     /**
