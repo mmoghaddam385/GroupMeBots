@@ -5,4 +5,6 @@
     <color name="colorAccent">#039be5</color>
 
     <color name="delete">#c30000</color>
+
+    <color name="black_semi_transparent">#B2000000</color>
 </resources>

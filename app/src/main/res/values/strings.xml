@@ -23,4 +23,6 @@
     <string name="clear_message">Clear</string>
     <string name="send_message">Send</string>
     <string name="add_attachment">Add Attachment</string>
+    <string name="fab_manual_add">Add by ID</string>
+    <string name="fab_login_add">Import from GroupMe account</string>
 </resources>

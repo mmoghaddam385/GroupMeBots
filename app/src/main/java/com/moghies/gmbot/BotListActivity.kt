@@ -2,13 +2,14 @@ package com.moghies.gmbot
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
+import com.getbase.floatingactionbutton.FloatingActionButton
+import com.getbase.floatingactionbutton.FloatingActionsMenu
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.dialog.ManualAddBotDialogWrapper
 
@@ -16,6 +17,8 @@ class BotListActivity : AppCompatActivity() {
 
     var lvBotList: ListView? = null
     val lvBotListAdapter = BotListAdapter(this::onBotClicked)
+
+    lateinit private var fabMenu: FloatingActionsMenu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +28,9 @@ class BotListActivity : AppCompatActivity() {
         toolbar.title = "Bot List"
         setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener {showAddBotDialog()}
+        fabMenu = findViewById(R.id.fabAddMenu) as FloatingActionsMenu
+
+        (findViewById(R.id.fabManualAdd) as FloatingActionButton).setOnClickListener { showAddBotDialog(); fabMenu.collapse() }
 
         lvBotList = findViewById(R.id.lvBotList) as ListView
 

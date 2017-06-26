@@ -3,25 +3,16 @@ package com.moghies.gmbot.fragment
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-
 import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.task.net.PostMessageTask
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [BotMessageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class BotMessageFragment(val bot: BotDbContract.BotsTable.BotEntry) : Fragment(), View.OnClickListener {
 
     private lateinit var txtMessage: EditText

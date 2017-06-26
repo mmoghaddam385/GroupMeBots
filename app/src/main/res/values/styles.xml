@@ -28,4 +28,11 @@
         <item name="android:textSize">@dimen/abc_text_size_subhead_material</item>
     </style>
 
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginRight">-5dp</item>
+    </style>
+
 </resources>
+
