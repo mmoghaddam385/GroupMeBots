@@ -19,4 +19,8 @@
     <string name="remove_bot">Remove Bot</string>
     <string name="edit_bot">Edit Bot</string>
     <string name="save_changes">Save Changes</string>
+    <string name="message_text">Message Text</string>
+    <string name="clear_message">Clear</string>
+    <string name="send_message">Send</string>
+    <string name="add_attachment">Add Attachment</string>
 </resources>

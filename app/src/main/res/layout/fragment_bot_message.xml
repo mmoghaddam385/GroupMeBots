@@ -1,13 +1,93 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.moghies.gmbot.fragment.BotMessageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txtMessageWrapper"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
 
-</FrameLayout>
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/glHalfHeight">
+
+        <EditText
+            android:id="@+id/txtMessage"
+            android:hint="@string/message_text"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:gravity="top|left"
+
+            android:maxLength="450" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/glHalfHeight"
+        app:layout_constraintGuide_percent="0.3"
+        android:orientation="horizontal" />
+
+    <CheckBox
+        android:id="@+id/chkAddAttachment"
+        android:text="@string/add_attachment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+
+        app:layout_constraintTop_toBottomOf="@id/txtMessageWrapper"/>
+
+    <TextView
+        android:id="@+id/txtAttachmentPlaceholder"
+        android:text="Attachments coming soon!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="8dp"
+
+        tools:visibility="visible"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/chkAddAttachment"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Button
+        android:id="@+id/btnClear"
+        android:text="@string/clear_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        style="@style/Widget.AppCompat.Button"
+        android:layout_margin="5dp"
+
+        app:layout_constraintBottom_toTopOf="@id/btnSend"/>
+
+    <Button
+        android:id="@+id/btnSend"
+        android:text="@string/send_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:layout_margin="5dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</android.support.constraint.ConstraintLayout>
