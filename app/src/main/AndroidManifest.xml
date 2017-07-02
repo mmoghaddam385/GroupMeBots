@@ -24,13 +24,12 @@
         <activity
             android:name=".BotViewActivity"
             android:label="@string/title_activity_bot_view"
-            android:parentActivityName=".BotListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.moghies.gmbot.BotListActivity" />
         </activity>
-        <activity android:name=".GroupMeAuthActivity"></activity>
+        <activity android:name=".GroupMeAuthActivity" />
     </application>
 
 </manifest>
