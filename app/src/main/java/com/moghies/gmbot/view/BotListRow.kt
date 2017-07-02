@@ -1,14 +1,19 @@
 package com.moghies.gmbot.view
 
+import android.net.Uri
+import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.moghies.gmbot.BotListAdapter
 import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
 import com.moghies.gmbot.dialog.wrapper.RemoveBotDialogWrapper
+import java.net.URL
 
 /**
  * Class that represents a bot list row item
@@ -41,6 +46,7 @@ class BotListRow(var bot: BotDbContract.BotsTable.BotEntry, val rootView: View,
     val tvName: TextView
     val tvGroup: TextView
     val btnRemove: ImageButton
+
     init {
         imgAvatar = rootView.findViewById(R.id.imgAvatar) as ImageView
         tvName = rootView.findViewById(R.id.tvName) as TextView
@@ -64,10 +70,10 @@ class BotListRow(var bot: BotDbContract.BotsTable.BotEntry, val rootView: View,
         tvName.text = bot.displayName()
         tvGroup.text = bot.groupName
 
-        if (bot.avatarUrl != null) {
-            //TODO: This
+        if (bot.avatarUrl != null && !TextUtils.isEmpty(bot.avatarUrl)) {
+            Glide.with(rootView.context).load(bot.avatarUrl).into(imgAvatar)
         } else {
-            imgAvatar.setImageResource(R.drawable.ic_android_black_48dp)
+            Glide.with(rootView.context).load(R.drawable.ic_android_black_48dp).into(imgAvatar)
         }
     }
 
