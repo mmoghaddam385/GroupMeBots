@@ -1,4 +1,4 @@
-package com.moghies.gmbot.dialog
+package com.moghies.gmbot.dialog.wrapper
 
 import android.app.AlertDialog
 import android.content.DialogInterface

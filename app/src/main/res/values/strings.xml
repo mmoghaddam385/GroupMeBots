@@ -25,4 +25,10 @@
     <string name="add_attachment">Add Attachment</string>
     <string name="fab_manual_add">Add by ID</string>
     <string name="fab_login_add">Import from GroupMe account</string>
+    <string name="sign_in">Login to GroupMe</string>
+    <string name="cannot_load_bots">Unable to import bots from GroupMe</string>
+    <string name="replace_bot_dialog_title">Bot already exists!</string>
+    <string name="remember_choice">Remember my decision</string>
+    <string name="replace">Replace</string>
+    <string name="skip">Skip</string>
 </resources>

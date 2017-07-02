@@ -59,6 +59,21 @@ class BotListAdapter(val onListItemClicked: ((BotDbContract.BotsTable.BotEntry) 
         notifyDataSetChanged()
     }
 
+    /**
+     * add a collection of bots to the list view
+     */
+    fun addAll(toAdd: Collection<BotDbContract.BotsTable.BotEntry>) {
+        bots.addAll(toAdd)
+        notifyDataSetChanged()
+    }
+
+    /**
+     * Check if this bot is in the list view
+     */
+    operator fun contains(bot: BotDbContract.BotsTable.BotEntry): Boolean {
+        return bot in bots
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val bot = bots[position]
 

@@ -16,7 +16,7 @@ import com.moghies.gmbot.BotViewActivity
 
 import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
-import com.moghies.gmbot.dialog.RemoveBotDialogWrapper
+import com.moghies.gmbot.dialog.wrapper.RemoveBotDialogWrapper
 import com.moghies.gmbot.task.db.UpdateBotTask
 
 

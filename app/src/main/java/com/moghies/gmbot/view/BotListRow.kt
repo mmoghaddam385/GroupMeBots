@@ -1,18 +1,14 @@
 package com.moghies.gmbot.view
 
-import android.content.Intent
-import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.moghies.gmbot.BotListAdapter
-import com.moghies.gmbot.BotViewActivity
 import com.moghies.gmbot.R
 import com.moghies.gmbot.db.BotDbContract
-import com.moghies.gmbot.dialog.RemoveBotDialogWrapper
+import com.moghies.gmbot.dialog.wrapper.RemoveBotDialogWrapper
 
 /**
  * Class that represents a bot list row item
